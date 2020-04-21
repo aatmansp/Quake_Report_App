@@ -2,7 +2,10 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,8 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,13 +66,23 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         });
 
 
+        ConnectivityManager connMgr = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID , null ,this);
-
+        if(networkInfo!=null && networkInfo.isConnected()) {
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this);
+        } else{
+            View loadingIndicator = findViewById(R.id.loading_indicator);
+            loadingIndicator.setVisibility(View.GONE);
+            mEmptyTextView = (TextView)findViewById(R.id.empty_view);
+            earthquakeListView.setEmptyView(mEmptyTextView);
+            mEmptyTextView.setText((R.string.no_internet_connection));
+        }
         mEmptyTextView = (TextView)findViewById(R.id.empty_view);
         earthquakeListView.setEmptyView(mEmptyTextView);
+
+
 
 
     }
