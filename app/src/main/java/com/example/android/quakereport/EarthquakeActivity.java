@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     private static final int EARTHQUAKE_LOADER_ID = 1;
     private EarthquakeAdapter mAdapter;
     private static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private TextView mEmptyTextView;
 
     private static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
 
@@ -62,6 +64,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
         LoaderManager loaderManager = getLoaderManager();
         loaderManager.initLoader(EARTHQUAKE_LOADER_ID , null ,this);
+
+        mEmptyTextView = (TextView)findViewById(R.id.empty_view);
+        earthquakeListView.setEmptyView(mEmptyTextView);
     }
 
     @Override
@@ -78,7 +83,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
         if(earthquakes!=null && !earthquakes.isEmpty()){
             mAdapter.addAll(earthquakes);
         }
-        Log.v(EarthquakeActivity.LOG_TAG , "onLoadFinished method is called");
+
+        mEmptyTextView.setText(R.string.no_earthquakes);
     }
 
     @Override
