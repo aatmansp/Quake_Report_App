@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -67,6 +68,8 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
 
         mEmptyTextView = (TextView)findViewById(R.id.empty_view);
         earthquakeListView.setEmptyView(mEmptyTextView);
+
+
     }
 
     @Override
@@ -80,9 +83,14 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderCallb
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
         mAdapter.clear();
 
+        View loadingIndicator = findViewById(R.id.loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+
         if(earthquakes!=null && !earthquakes.isEmpty()){
             mAdapter.addAll(earthquakes);
         }
+
+
 
         mEmptyTextView.setText(R.string.no_earthquakes);
     }

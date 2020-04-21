@@ -18,4 +18,12 @@
         android:textAppearance="?android:textAppearanceMedium"
         android:id="@+id/empty_view"/>
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:id="@+id/loading_indicator"
+        />
+
 </RelativeLayout>
